@@ -61,6 +61,11 @@ cask "helium-browser"
 cask "logi-options+"
 
 # ----------------------
+# Fonts
+# ----------------------
+cask "font-meslo-lg-nerd-font"  # Nerd Font for terminal icons (eza, p10k)
+
+# ----------------------
 # VS Code / Cursor Extensions
 # ----------------------
 # Core

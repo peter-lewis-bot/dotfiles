@@ -37,9 +37,13 @@ zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 
 # Add in snippets (oh-my-zsh plugins via zinit)
-zinit snippet OMZP::wd
+zinit snippet OMZL::directories.zsh
 zinit snippet OMZP::ssh-agent
 zinit snippet OMZP::1password
+
+# wd (warp directory) - load as full plugin, not snippet
+zinit ice wait lucid
+zinit load mfaerevaag/wd
 
 # Load completions (with daily cache rebuild optimization)
 autoload -Uz compinit
@@ -99,8 +103,10 @@ project_version_hook
 # ----------------------
 # GLG-specific integrations
 # ----------------------
-# GLG CLI bash completion
-command -v glgroup &> /dev/null && source <(glgroup bashcomplete)
+# GLG CLI completion (suppress errors if it outputs bash-only syntax)
+if command -v glgroup &> /dev/null; then
+  source <(glgroup bashcomplete) 2>/dev/null || true
+fi
 
 # OpenVPN path (for GLG VPN if needed)
 export OPENVPN_BIN_PATH=$(brew --prefix openvpn 2>/dev/null)
