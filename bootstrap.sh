@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+# Note: Not using set -e so that failures in optional steps (like brew) don't stop the script
 
 echo "🚀 Bootstrapping dotfiles..."
 
@@ -27,9 +27,9 @@ if ! command -v brew &> /dev/null; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# Install dependencies via Brewfile
+# Install dependencies via Brewfile (don't fail if some apps can't install)
 echo "📦 Installing apps and tools from Brewfile..."
-brew bundle --file="$DOTFILES_DIR/Brewfile"
+brew bundle --file="$DOTFILES_DIR/Brewfile" || echo "   ⚠️  Some Brewfile items failed (this is usually OK if apps are already installed)"
 
 # Backup existing dotfiles
 BACKUP_DIR="$HOME/.dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
