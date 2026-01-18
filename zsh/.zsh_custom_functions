@@ -157,7 +157,7 @@ aws-profile() {
 }
 
 # ----------------------
-# GLG VPN Functions
+# GLG Functions
 # ----------------------
 vpnstart() {
   sudo -E glgroup wireguard connect
@@ -165,6 +165,12 @@ vpnstart() {
 
 vpnstop() {
   sudo -E glgroup wireguard disconnect
+}
+
+# Start Epiquery
+epistart() {
+  fnm use 12.3.1
+  npm --prefix ~/dev/epiquery2/ run start
 }
 
 # ----------------------

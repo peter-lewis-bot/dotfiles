@@ -111,6 +111,9 @@ export OPENVPN_BIN_PATH=$(brew --prefix openvpn 2>/dev/null)
 # Local bin
 export PATH="$HOME/.local/bin:$PATH"
 
+# Custom tools bin (aws-sso-roller, bfg, gdsfind, gdsservice)
+[[ -d "$HOME/dev/tools/bin" ]] && export PATH="$HOME/dev/tools/bin:$PATH"
+
 # Flutter (if installed)
 [[ -d "$HOME/dev/flutter/bin" ]] && export PATH="$PATH:$HOME/dev/flutter/bin"
 
