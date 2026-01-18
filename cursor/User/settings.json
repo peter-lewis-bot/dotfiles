@@ -1,0 +1,141 @@
+{
+  "[dockercompose]": {
+    "editor.autoIndent": "advanced",
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[github-actions-workflow]": {
+    "editor.autoIndent": "advanced",
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[yaml]": {
+    "editor.autoIndent": "advanced"
+  },
+  "auto-close-tag.activationOnLanguage": [
+    "xml",
+    "php",
+    "blade",
+    "ejs",
+    "jinja",
+    "javascript",
+    "javascriptreact",
+    "typescriptreact",
+    "plaintext",
+    "markdown",
+    "vue",
+    "liquid",
+    "erb",
+    "lang-cfml",
+    "cfml",
+    "HTML (EEx)",
+    "HTML (Eex)",
+    "plist"
+  ],
+  "cSpell.userWords": [
+    "",
+    "autofetch",
+    "Cascadia",
+    "cpid",
+    "Epiquery",
+    "esbenp",
+    "kubectl",
+    "kubernetes",
+    "Menlo",
+    "Meslo",
+    "minikube",
+    "Monokai",
+    "monospace",
+    "nuxt",
+    "peterlewis",
+    "pinia",
+    "Pylance",
+    "starphleet",
+    "vsintellicode"
+  ],
+  "css.lint.unknownAtRules": "ignore",
+  "cursor.composer.usageSummaryDisplay": "always",
+  "cursor.cpp.disabledLanguages": [
+    "plaintext"
+  ],
+  "dart.flutterSdkPath": "/Users/peterlewis/dev/flutter",
+  "editor.accessibilitySupport": "off",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.fontFamily": "'Cascadia Code', Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontLigatures": true,
+  "editor.gotoLocation.multipleDefinitions": "goto",
+  "editor.guides.bracketPairs": "active",
+  "editor.inlineSuggest.enabled": true,
+  "editor.linkedEditing": true,
+  "editor.renderWhitespace": "none",
+  "editor.stickyScroll.enabled": true,
+  "editor.suggestSelection": "first",
+  "files.associations": {
+    "*.module": "php",
+    "*.overrides": "shellscript",
+    ".starphleet": "shellscript",
+    "after_containerize": "shellscript",
+    "orders": "shellscript",
+    "remote": "shellscript"
+  },
+  "git-graph.repository.fetchAndPrune": true,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "git.mergeEditor": false,
+  "github.copilot.editor.enableAutoCompletions": true,
+  "github.copilot.enable": {
+    "*": true,
+    "markdown": true,
+    "plaintext": false,
+    "scminput": false,
+    "typescript": true,
+    "yaml": false
+  },
+  "python.languageServer": "Pylance",
+  "redhat.telemetry.enabled": true,
+  "scss.lint.unknownAtRules": "ignore",
+  "supermaven.enable": {
+    "*": true
+  },
+  "terminal.external.windowsExec": "C:\\Windows\\System32\\wsl.exe",
+  "terminal.integrated.autoReplies": {
+    "Terminate batch job (Y/N)": "Y\r",
+    "[Oh My Zsh] Would you like to check for updates? [Y/n]": "Y\r"
+  },
+  "terminal.integrated.automationProfile.osx": null,
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.env.osx": {
+    "CW_NEW_SESSION": "1",
+    "FIG_NEW_SESSION": "1",
+    "Q_NEW_SESSION": "1"
+  },
+  "terminal.integrated.fontFamily": "MesloLGS NF",
+  "terminal.integrated.profiles.osx": {
+    "/bin/zsh (migrated)": {
+      "args": [
+        "-l"
+      ],
+      "path": "/bin/zsh"
+    }
+  },
+  "terminal.integrated.shellIntegration.enabled": false,
+  "terminal.integrated.smoothScrolling": false,
+  "tsInterfaceSorter.emptyLineBetweenProperties": false,
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "window.commandCenter": true,
+  "window.zoomLevel": 1,
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.iconTheme": "vscode-icons",
+  "claudeCode.preferredLocation": "panel",
+  "claudeCode.selectedModel": "default"
+}

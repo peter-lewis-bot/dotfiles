@@ -106,6 +106,13 @@ fi
 corepack enable
 echo "   ✅ Corepack enabled"
 
+# Configure apps
+echo "🔧 Configuring apps..."
+"$DOTFILES_DIR/cursor/setup.sh"
+"$DOTFILES_DIR/iterm2/setup.sh"
+# Note: Raycast config contains tokens and syncs via cloud - not included in dotfiles
+echo "   ✅ Apps configured"
+
 # Ask about macOS configuration
 echo ""
 read -p "🖥️  Would you like to configure macOS settings? (y/n) " -n 1 -r
