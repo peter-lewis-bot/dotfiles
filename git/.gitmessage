@@ -1,0 +1,30 @@
+
+# <type>(<scope>): <subject>
+#
+# <body>
+#
+# <footer>
+#
+# Types:
+#   feat:     A new feature
+#   fix:      A bug fix
+#   docs:     Documentation only changes
+#   style:    Formatting, missing semicolons, etc; no code change
+#   refactor: Code change that neither fixes a bug nor adds a feature
+#   perf:     Code change that improves performance
+#   test:     Adding missing tests or correcting existing tests
+#   chore:    Changes to build process or auxiliary tools
+#
+# Scope: Optional, can be anything specifying the place of the commit change
+#
+# Subject: Short description (50 chars or less)
+#   - Use imperative mood: "Add feature" not "Added feature"
+#   - Don't capitalize first letter
+#   - No period at the end
+#
+# Body: Explain *what* and *why* (not *how*)
+#   - Wrap at 72 characters
+#
+# Footer: Reference issues, breaking changes, etc.
+#   - Breaking changes: BREAKING CHANGE: <description>
+#   - Issues: Closes #123, Fixes #456

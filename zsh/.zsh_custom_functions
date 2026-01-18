@@ -1,0 +1,257 @@
+# ----------------------
+# Custom Functions
+# ----------------------
+
+# Display the public IP address
+myip() {
+  curl -s http://ipecho.net/plain && echo
+}
+
+# Find apps running on specified port
+# Usage: findport <port>
+findport() {
+  if [ -z "$1" ]; then
+    echo "Usage: findport <port>"
+    return 1
+  fi
+  lsof -n -i4TCP:$1
+}
+
+# Kill process by PID
+# Usage: killpid <pid>
+killpid() {
+  if [ -z "$1" ]; then
+    echo "Usage: killpid <pid>"
+    return 1
+  fi
+  kill -9 $1
+}
+
+# Find process listening on a specific port (more detailed)
+# Usage: find-process-by-port <port>
+find-process-by-port() {
+  if [ -z "$1" ]; then
+    echo "Usage: find-process-by-port <port>"
+    return 1
+  fi
+
+  local PORT=$1
+  local RESULT=$(lsof -iTCP -sTCP:LISTEN -n -P | grep ":$PORT")
+
+  if [ -z "$RESULT" ]; then
+    echo "No process found listening on port $PORT."
+  else
+    echo "Process(es) listening on port $PORT:"
+    echo "$RESULT"
+  fi
+}
+
+# Kill process listening on a specific port
+# Usage: kill-process-by-port <port>
+kill-process-by-port() {
+  if [ -z "$1" ]; then
+    echo "Usage: kill-process-by-port <port>"
+    return 1
+  fi
+
+  local PORT=$1
+  local RESULT=$(lsof -iTCP -sTCP:LISTEN -n -P | grep ":$PORT")
+
+  if [ -z "$RESULT" ]; then
+    echo "No process found listening on port $PORT."
+  else
+    echo "Process(es) listening on port $PORT:"
+    echo "$RESULT"
+
+    local PIDS=$(echo "$RESULT" | awk '{print $2}')
+    for PID in $PIDS; do
+      echo "Killing process with PID $PID on port $PORT..."
+      kill $PID
+    done
+  fi
+}
+
+# Generate pseudo-random string of characters
+generatesecret() {
+  local length=${1:-64}
+  node -e "console.log(require('crypto').randomBytes($length).toString('hex'))"
+}
+
+# Load environment variables from a .env file
+# Usage: envit [path/to/.env]
+envit() {
+  local ENV_FILE=".env"
+
+  if [ $# -gt 0 ]; then
+    ENV_FILE="$1"
+  fi
+
+  if [ ! -f "$ENV_FILE" ]; then
+    echo "Error: .env file not found at $ENV_FILE"
+    return 1
+  fi
+
+  while IFS= read -r line; do
+    # Ignore comments and empty lines
+    if [[ "$line" =~ ^#.* ]] || [[ -z "$line" ]]; then
+      continue
+    fi
+
+    # Check if the line is a valid key-value pair
+    if [[ "$line" =~ ^[a-zA-Z_][a-zA-Z0-9_]*=.* ]]; then
+      local key="${line%=*}"
+      local value="${line#*=}"
+      export "$key"="$value"
+      echo "Exported $key"
+    else
+      echo "Warning: Invalid line in .env file: $line"
+    fi
+  done < "$ENV_FILE"
+
+  echo "Successfully loaded environment variables from $ENV_FILE"
+}
+
+# Convert JSON env vars to .env file format
+# Usage: convertEnvVars <path_to_json_file> [output_path]
+convertEnvVars() {
+  if [ -z "$1" ]; then
+    echo "Usage: convertEnvVars path_to_json_file [output_path]"
+    return 1
+  fi
+
+  local json_file="$1"
+
+  if [ ! -f "$json_file" ]; then
+    echo "File not found: $json_file"
+    return 1
+  fi
+
+  local output_file
+  if [ -n "$2" ]; then
+    output_file="$2"
+  else
+    output_file="${json_file%.json}.env"
+  fi
+
+  jq -r '.[] | "export \(.name)=\(.value)"' "$json_file" > "$output_file"
+  echo "Environment variables have been written to: $output_file"
+}
+
+# Interactive AWS profile selector with fzf
+# Usage: aws-profile
+aws-profile() {
+  export AWS_PROFILE=$(sed -n "s/^\[\(profile \)\{0,1\}\(.*\)\]/\2/gp" ~/.aws/config | fzf)
+
+  if [ "${AWS_PROFILE}" = "default" ]; then
+    unset AWS_PROFILE
+    return 0
+  fi
+
+  local _whoami=$(aws sts get-caller-identity 2>/dev/null)
+  if [ $? != 0 ]; then
+    aws sso login
+    _whoami=$(aws sts get-caller-identity 2>/dev/null)
+  fi
+
+  echo "${_whoami}" | jq --raw-output '.Arn'
+}
+
+# ----------------------
+# GLG VPN Functions
+# ----------------------
+vpnstart() {
+  sudo -E glgroup wireguard connect
+}
+
+vpnstop() {
+  sudo -E glgroup wireguard disconnect
+}
+
+# ----------------------
+# Project version management hook
+# Auto-switches Node version (fnm) and prepares corepack package manager
+# Optimized for performance with caching to avoid redundant work
+# ----------------------
+project_version_hook() {
+  local current_dir="${PWD}"
+
+  # Skip if we're in the same directory (cached)
+  [[ "$current_dir" == "$_project_version_last_dir" ]] && return
+  _project_version_last_dir="$current_dir"
+
+  # Switch Node version if .nvmrc or .node-version exists (fast check, fnm handles caching)
+  if [[ -f .nvmrc || -f .node-version ]]; then
+    fnm use --install-if-missing --silent-if-unchanged 2>/dev/null
+  fi
+
+  # Ensure corepack is available (Node 25+ doesn't include it by default)
+  if command -v node &> /dev/null && ! command -v corepack &> /dev/null; then
+    echo "Installing corepack for Node $(node --version)..."
+    npm install -g corepack &>/dev/null && corepack enable &>/dev/null
+  fi
+
+  # Prepare corepack package manager if package.json has packageManager field
+  if [[ -f package.json ]] && command -v corepack &> /dev/null; then
+    local package_manager=""
+    if command -v jq &> /dev/null; then
+      package_manager=$(jq -r '.packageManager // empty' package.json 2>/dev/null)
+    else
+      package_manager=$(grep -m1 -o '"packageManager"[[:space:]]*:[[:space:]]*"[^"]*"' package.json 2>/dev/null | sed -E 's/.*"packageManager"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/')
+    fi
+
+    if [[ -n "$package_manager" && "$package_manager" != "null" && "$package_manager" != "empty" && "$package_manager" != "$_project_version_last_pm" ]]; then
+      _project_version_last_pm="$package_manager"
+      corepack prepare "$package_manager" --activate &>/dev/null
+
+      local pm_name="${package_manager%%@*}"
+      if ! command -v "$pm_name" &> /dev/null; then
+        corepack enable &>/dev/null
+      fi
+    fi
+  else
+    _project_version_last_pm=""
+  fi
+}
+
+# ----------------------
+# Utility Functions
+# ----------------------
+
+# Create directory and cd into it
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
+# Quick HTTP server in current directory
+serve() {
+  local port="${1:-8000}"
+  python3 -m http.server "$port"
+}
+
+# Extract various archive formats
+extract() {
+  if [ -z "$1" ]; then
+    echo "Usage: extract <file>"
+    return 1
+  fi
+
+  if [ ! -f "$1" ]; then
+    echo "'$1' is not a valid file"
+    return 1
+  fi
+
+  case "$1" in
+    *.tar.bz2)   tar xjf "$1"     ;;
+    *.tar.gz)    tar xzf "$1"     ;;
+    *.bz2)       bunzip2 "$1"     ;;
+    *.rar)       unrar x "$1"     ;;
+    *.gz)        gunzip "$1"      ;;
+    *.tar)       tar xf "$1"      ;;
+    *.tbz2)      tar xjf "$1"     ;;
+    *.tgz)       tar xzf "$1"     ;;
+    *.zip)       unzip "$1"       ;;
+    *.Z)         uncompress "$1"  ;;
+    *.7z)        7z x "$1"        ;;
+    *)           echo "'$1' cannot be extracted via extract()" ;;
+  esac
+}

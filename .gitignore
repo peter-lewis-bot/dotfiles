@@ -1,0 +1,11 @@
+# Secrets (contains tokens - never commit)
+zsh/.secrets
+
+# macOS
+.DS_Store
+
+# Zsh compiled files
+*.zwc
+
+# Local overrides (if you want machine-specific config)
+.local
