@@ -106,6 +106,12 @@ fi
 corepack enable
 echo "   ✅ Corepack enabled"
 
+# Initialize SSH directory
+echo "🔑 Setting up SSH..."
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+echo "   ✅ SSH directory ready"
+
 # Configure apps
 echo "🔧 Configuring apps..."
 "$DOTFILES_DIR/cursor/setup.sh"
