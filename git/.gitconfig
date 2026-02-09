@@ -1,6 +1,6 @@
 [user]
 	name = Peter Lewis
-	email = peter.lewis@glgroup.com
+	email = peter.noah.lewis@gmail.com
 
 [init]
 	defaultBranch = main
@@ -41,3 +41,4 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+
