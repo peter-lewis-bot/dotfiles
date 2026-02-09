@@ -63,7 +63,7 @@ cask "logi-options+"
 # ----------------------
 # Fonts
 # ----------------------
-cask "font-meslo-lg-nerd-font"  # Nerd Font for terminal icons (eza, p10k)
+cask "font-meslo-for-powerlevel10k"  # MesloLGS NF - required font for p10k
 
 # ----------------------
 # VS Code / Cursor Extensions
